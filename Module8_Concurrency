@@ -17,7 +17,7 @@ public class Concurrency {
 	public static synchronized void countOneUp() {
 		count++;}
 	
-	public static void main (String[] args) throws InterruptedException {
+	public static void main (String[] args) {
 		
 		Random r = new Random();
 		int arr[] = new int[100000000];
@@ -53,8 +53,12 @@ public class Concurrency {
 		t0.start();
 		t1.start();
 		
-		t0.join();
-		t1.join();
+		try {
+			t0.join();
+			t1.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		
 		long end = System.currentTimeMillis();
 		long timeElapsed = end - start;
@@ -64,6 +68,7 @@ public class Concurrency {
 		
 	}
 }
+
 
 
 
