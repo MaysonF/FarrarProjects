@@ -1,0 +1,118 @@
+
+/* Mayson Farrar, 11/12/2021, Module 8 | Concurrency
+ * Make an array of 200 million random numbers between 1 and 10. 
+ * Compute the sum in parallel using multiple threads. Then compute 
+ * the sum with only one thread, and display the sum and times for both cases.
+ */
+
+/*Parallel Array Sum*/
+
+package module8;
+
+import java.util.Random;
+
+public class Concurrency {
+	
+	public static int count = 0;
+	public static synchronized void countOneUp() {
+		count++;}
+	
+	public static void main (String[] args) throws InterruptedException {
+		
+		Random r = new Random();
+		int arr[] = new int[100000000];
+		 
+		long start = System.currentTimeMillis();
+		
+		Thread t0 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				for(int i = 0; i < arr.length; i++) {
+				arr[i] = r.nextInt(10) +1;		
+				countOneUp();
+				
+				}
+			}
+		});
+	
+		Thread t1 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				for(int i = 0; i < arr.length; i++) {
+				arr[i] = r.nextInt(10) +1;	
+				countOneUp();
+				
+				}
+			}
+		});
+		
+		t0.start();
+		t1.start();
+		
+		t0.join();
+		t1.join();
+		
+		long end = System.currentTimeMillis();
+		long timeElapsed = end - start;
+		
+		System.out.println("Execution time " + timeElapsed + " in ms");
+		System.out.println("Value: " +count);
+		
+	}
+}
+
+
+
+/* Mayson Farrar, 11/12/2021, Module 8 | Concurrency
+ * Make an array of 200 million random numbers between 1 and 10. 
+ * Compute the sum in parallel using multiple threads. Then compute 
+ * the sum with only one thread, and display the sum and times for both cases.
+ */
+
+/*Singular Array Sum*/
+
+package module8;
+
+import java.util.Random;
+
+public class Concurrency {
+	
+	public static int count = 0;
+	public static synchronized void countOneUp() {
+		count++;}
+	
+	public static void main (String[] args) throws InterruptedException {
+		
+		Random r = new Random();
+		int arr[] = new int[200000000];
+		 
+		long start = System.currentTimeMillis();
+		
+		Thread t0 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				for(int i = 0; i < arr.length; i++) {
+				arr[i] = r.nextInt(10) +1;		
+				countOneUp();
+				
+				}
+			}
+		});
+		
+		t0.start();
+		t0.join();
+
+		long end = System.currentTimeMillis();
+		long timeElapsed = end - start;
+		
+		System.out.println("Execution time " + timeElapsed + " in ms");
+		System.out.println("Value: " +count);
+		
+	}
+}
